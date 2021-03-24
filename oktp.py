@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime
 import logging
 
 from requests.sessions import session
@@ -65,7 +66,19 @@ def check_task(interactid) ->bool:
     return res['state'] == 1
 
 
+def init_logging():
+    f = open(f'log/oktp.log','a',encoding='utf-8')
+    logging.basicConfig(
+        level=logging.INFO,
+        format='[%(levelname)s,%(lineno)d]:%(message)s',
+        stream=f
+    )
+
+
 if __name__ == '__main__':
+    init_logging()
+    t = datetime.now().strftime("%Y-%m-%d")
+    logging.info(t)
     token = login(username, password)
     tasks = get_tasklist('MDAwMDAwMDAwMLOGpZiIqb9shrVyoQ')
     for task in tasks:
